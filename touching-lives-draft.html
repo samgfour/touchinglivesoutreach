@@ -126,7 +126,7 @@ body.show-ph .ph{outline:2px dashed #B36B00;outline-offset:3px}
 
 .site-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:2px solid var(--edge)}
 .bar{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;padding-block:.6rem}
-.brand{display:flex;align-items:center;gap:.6rem;margin-right:auto;text-decoration:none;font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;font-weight:750;font-size:1rem;line-height:1.05}
+.brand{display:flex;align-items:center;gap:.6rem;margin-right:auto;text-decoration:none;font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;font-weight:750;font-size:1rem;}
 .brand svg{width:40px;height:40px;flex:none}
 .menu{min-height:44px;min-width:44px;padding:0 .9rem;border:2px solid var(--edge);border-radius:12px;background:transparent;color:var(--ink);font:700 .95rem "Atkinson Hyperlegible",system-ui,sans-serif;cursor:pointer}
 .nav{display:none;order:5;flex-basis:100%;flex-direction:column;padding:.4rem 0 .8rem}
@@ -162,7 +162,7 @@ body.show-ph .ph{outline:2px dashed #B36B00;outline-offset:3px}
 /* ---------- Photo mosaic ---------- */
 .strip{padding-block:clamp(2rem,5vw,3.5rem) 0}
 .mosaic{display:grid;gap:.75rem;grid-template-columns:repeat(2,1fr);grid-auto-rows:150px;grid-auto-flow:dense}
-.shot{margin:0;padding:1rem;display:flex;align-items:flex-end;border:2px solid var(--edge);border-radius:16px;font-weight:700;line-height:1.2;color:var(--navy);background-color:#E3ECFF;background-image:repeating-linear-gradient(135deg,rgba(16,27,77,.08) 0 10px,transparent 10px 20px)}
+.shot{margin:0;padding:1rem;display:flex;align-items:flex-end;border:2px solid var(--edge);border-radius:16px;font-weight:700;line-height:1.2;color:var(--navy);background-color:#E3ECFF;background-image:linear-gradient(180deg,rgba(255,255,255,.0),rgba(16,27,77,.12));}
 .s1{grid-row:span 2;background-color:#CFEFDC}
 .s2{background-color:#CFDDFF}
 .s3{grid-column:span 2;background-color:#FBEBA9}
@@ -270,7 +270,7 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
 @media (min-width:800px){.fgrid{grid-template-columns:1.3fr 1fr 1fr 1fr}}
 
 /* ---------- Prototype toggle ---------- */
-.proto{position:fixed;left:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:40;min-height:44px;padding:.4rem 1rem;border:2px solid var(--navy);border-radius:999px;background:#fff;color:var(--navy);font:700 .9rem "Atkinson Hyperlegible",system-ui,sans-serif;box-shadow:3px 3px 0 var(--navy);cursor:pointer}
+.proto{position:fixed;left:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:40;min-height:44px;padding:.4rem 1rem;border:2px solid var(--navy);border-radius:999px;background:#fff;color:var(--navy);font:700 .9rem/1 "Atkinson Hyperlegible",system-ui,sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--navy)}
 .proto[aria-pressed="true"]{background:var(--yellow)}
 .proto:focus-visible{outline-color:var(--blue)}
 </style>
@@ -319,7 +319,7 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <h1>Every neighbor deserves a chance to thrive.</h1>
-        <p class="lead">We provide food, clothing, and jobs to underserved women, men, and children in Los Angeles County, and help them recognize their own talents and build the confidence to shape what comes next.</p>
+        <p class="lead">We provide food, clothing, and jobs to underserved women, men, and children in Los Angeles County, and help them recognize their own talents and build the confidence to shape their future.</p>
         <div class="cta-row">
           <a class="btn" href="#give">Donate</a>
           <a class="btn btn-ghost" href="#volunteer">Volunteer</a>
@@ -363,11 +363,11 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
     <div class="wrap">
       <article class="mv">
         <h2>Our mission</h2>
-        <p class="mv-text">Our mission is to inspire and empower underserved women, men, and children by providing necessities such as food, clothing, and jobs to enable them to recognize their inner talents and gain confidence in their ability to shape a positive future for themselves and their community.</p>
+        <p class="mv-text">Our mission is to inspire and empower underserved women, men, and children by providing necessities such as food, clothing, and jobs to enable them to recognize their inner strength and potential, while bringing them closer to the Lord through prayer and fellowship.</p>
       </article>
       <article class="mv small">
         <h2>Our vision</h2>
-        <p class="mv-text">We envision an empowered community of financially and economically empowered people who make better decisions, complete their education, get fulfilling jobs, and develop an inner compass to shape their lives in a positive direction.</p>
+        <p class="mv-text">We envision an empowered community of financially and economically empowered people who make better decisions, complete their education, get fulfilling jobs, and develop an increased capacity to serve and lead.</p>
       </article>
     </div>
   </section>
@@ -483,7 +483,7 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
             <input class="input" id="custom" type="number" inputmode="decimal" min="1" step="any" placeholder="Other amount" aria-label="Other amount in dollars">
           </div>
         </fieldset>
-        <p class="impact-line ph" id="impact"></p>
+        <p class="impact-line ph" id="donationImpact"></p>
         <button class="btn btn-navy btn-full" type="submit" id="giveBtn">Donate $50 once</button>
         <p class="status" id="giveStatus" role="status"></p>
       </form>
@@ -601,7 +601,7 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
   });
 
   /* donation form (prototype: nothing is charged) */
-  var form = $("#giveForm"), btn = $("#giveBtn"), impactEl = $("#impact"),
+  var form = $("#giveForm"), btn = $("#giveBtn"), impactEl = $("#donationImpact"),
       status = $("#giveStatus"), custom = $("#custom");
   var impact = {
     "25": "[What $25 provides]",
