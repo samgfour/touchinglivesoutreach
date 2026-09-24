@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
+<meta name="description" content="Touching Lives Outreach helps neighbors in Los Angeles County with food, clothing, education, community support, and job-building opportunities.">
 <title>Touching Lives Outreach: home page prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +27,7 @@
   --yellow:#F7D76A;
   --navy:#101B4D;
   --on-dark:#EEF2FF;
+  --danger:#B42318;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -244,6 +246,7 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
 .custom span{font-weight:700}
 .input{width:100%;min-height:48px;padding:.6rem .8rem;border:2px solid var(--edge);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit}
 .card .input{background:#fff;color:var(--navy);border-color:var(--navy)}
+.input[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 1px rgba(180,35,24,.18)}
 .impact-line{margin:0 0 1.1rem;min-height:3em;font-size:.98rem}
 .status{margin:.9rem 0 0;font-weight:700;min-height:1.5em}
 @media (min-width:900px){.give-grid{grid-template-columns:1fr 1fr;gap:4rem;align-items:start}}
@@ -498,7 +501,7 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
         <p class="caption ph">The roles in the form are proposed. Confirm them with the client.</p>
       </div>
 
-      <form class="vcard" id="volForm">
+      <form class="vcard" id="volForm" novalidate>
         <div class="field">
           <label for="v-name">Your name</label>
           <input class="input" id="v-name" name="name" type="text" autocomplete="name" required>
@@ -582,15 +585,29 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
 
   /* mobile menu */
   var header = $("#siteHeader"), menuBtn = $(".menu");
+  function closeMenu(){
+    header.classList.remove("open");
+    menuBtn.setAttribute("aria-expanded", "false");
+  }
   menuBtn.addEventListener("click", function(){
     var open = header.classList.toggle("open");
     menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
   });
   $$("#nav a").forEach(function(a){
     a.addEventListener("click", function(){
-      header.classList.remove("open");
-      menuBtn.setAttribute("aria-expanded", "false");
+      closeMenu();
     });
+  });
+  document.addEventListener("keydown", function(event){
+    if (event.key === "Escape" && header.classList.contains("open")) {
+      closeMenu();
+      menuBtn.focus();
+    }
+  });
+  document.addEventListener("click", function(event){
+    if (header.classList.contains("open") && !header.contains(event.target) && event.target !== menuBtn) {
+      closeMenu();
+    }
   });
 
   /* placeholder highlight toggle */
@@ -643,10 +660,50 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
   });
   update();
 
-  /* volunteer form (prototype) */
-  $("#volForm").addEventListener("submit", function(e){
+  /* volunteer form validation */
+  function setFieldError(field, message){
+    if (!field) return;
+    field.setAttribute("aria-invalid", "true");
+    field.dataset.error = message || "";
+  }
+  function clearFieldError(field){
+    if (!field) return;
+    field.removeAttribute("aria-invalid");
+    delete field.dataset.error;
+  }
+  var volForm = $("#volForm");
+  volForm.addEventListener("submit", function(e){
     e.preventDefault();
+    var valid = true;
+    var nameField = $("#v-name");
+    var emailField = $("#v-email");
+    var roleChecks = volForm.querySelectorAll('input[name="role"]');
+    var anyRole = Array.prototype.some.call(roleChecks, function(item){ return item.checked; });
+
+    clearFieldError(nameField);
+    clearFieldError(emailField);
+    $("#volStatus").textContent = "";
+
+    if (!nameField.value.trim()) {
+      setFieldError(nameField, "Please enter your name.");
+      valid = false;
+    }
+
+    var email = emailField.value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setFieldError(emailField, "Please enter a valid email address.");
+      valid = false;
+    }
+
+    if (!anyRole) {
+      $("#volStatus").textContent = "Please choose at least one way you’d like to help.";
+      valid = false;
+    }
+
+    if (!valid) return;
+
     $("#volStatus").textContent = "Prototype only: this form is not connected yet, so nothing was sent.";
+    volForm.reset();
   });
 
   /* toy drive sign-up (prototype) */
