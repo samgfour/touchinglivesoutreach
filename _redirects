@@ -1,0 +1,17 @@
+# Old WordPress URLs to the matching section of the new page (301 = permanent)
+/about-us /#mission 301
+/about-us/ /#mission 301
+/programs /#programs 301
+/programs/ /#programs 301
+/contact /#contact 301
+/contact/ /#contact 301
+/donate /#give 301
+/donate/ /#give 301
+/blog /#events 301
+/blog/ /#events 301
+/touching-lives-outreach-field-trip-berry-farm /#events 301
+/touching-lives-outreach-field-trip-berry-farm/ /#events 301
+# Wildcards go last
+/blog/* /#events 301
+/category/* /#events 301
+/tag/* /#events 301
