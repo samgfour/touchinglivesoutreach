@@ -615,7 +615,7 @@ legend{padding:0;margin-bottom:.5rem;font-weight:700}
   $("#volForm").addEventListener("submit",function(e){
     e.preventDefault();
     var roles=$$("input[name=role]:checked",e.target).map(function(c){return c.parentNode.textContent.trim();}).join(", ")||"Not sure yet";
-    var body="Hi Touching Lives Outreach, I'd like to volunteer.\nName: "+$("#v-name").value+"\nEmail: "+$("#v-email").value+"\nPhone: "+($("#v-phone").value||"-")+"\nInterested in: "+roles+"\nUsually free: "+$("#v-when").value;
+    var body="Hi Temika, I'd like to volunteer.\nName: "+$("#v-name").value+"\nEmail: "+$("#v-email").value+"\nPhone: "+($("#v-phone").value||"-")+"\nInterested in: "+roles+"\nUsually free: "+$("#v-when").value;
     var l=links("Volunteer sign-up",body);
     $("#volStatus").innerHTML='Almost done. Send your details to us: <a class="btn btn-sm" href="'+esc(l.mail)+'">By email</a>'+(l.wa?'<a class="btn btn-sm" href="'+esc(l.wa)+'" target="_blank" rel="noopener">On WhatsApp</a>':'');
   });
